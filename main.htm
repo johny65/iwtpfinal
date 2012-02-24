@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Publicaciones</title>
+  </head>
+  <body>
+	  <table border=0><tr><td colspan=3><h1>Listado de Publicaciones:</h1></td></tr>
+	    {% if not publicaciones %}
+	      <tr><td>No hay ninguna publicaci&oacute;n cargada.</td></tr>
+	    {% else %}
+          {% for pub in publicaciones %}
+            <tr bgcolor=#D4FFAD>
+              <td><strong>{{ pub.titulo }} ({{ pub.year }})</strong>
+              <br>{{ pub.autor.apellido }}, {{ pub.autor.nombre }}
+              <br>Precio: ${{ pub.precio }}
+              </td>
+              <td align="center"><a href="info?id={{ pub.pubid }}">
+				  <img src="img/ver.jpg">Detalles</a></td>
+              <td align="center"><a href="delete?id={{ pub.pubid }}">
+				  <img src="img/del.png">Eliminar</a></td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </table>
+
+      <br><br>
+
+	  <table border=1><tr><td>
+        <form action="/cargar" method="post">
+          <table border=0>
+            <tr><td colspan=2><label><strong>Cargar nueva publicaci&oacute;n:</strong></label></td></tr>
+            <tr><td>T&iacute;tulo:</td><td><input type="text" name="titulo"></td></tr>
+            <tr><td>A&ntilde;o:</td><td><input type="numeric" name="year"></td></tr>
+            <tr><td>Precio: $</td><td><input type="numeric" name="precio"></td></tr>
+            <tr><td>Editorial:</td><td><input type="text" name="editorial"></td></tr>
+            <tr><td>Datos del autor:</td><td></td></tr>
+            <tr><td>Nombre:</td><td><input type="text" name="nombre"></td></tr>
+            <tr><td>Apellido:</td><td><input type="text" name="apellido"></td></tr>
+            <tr><td>Ciudad:</td><td><input type="text" name="ciudad"></td></tr>
+            <tr><td>C.P.:</td><td><input type="numeric" name="cp"></td></tr>
+            <tr><td>E-mail:</td><td><input type="text" name="email"></td></tr>
+            <tr><td><input type="submit" value="Guardar"></td></tr>
+          </table>
+        </form>
+      </td></tr></table>
+
+  </body>
+</html>

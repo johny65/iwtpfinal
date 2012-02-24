@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Detalles de la publicaci&oacute;n</title>
+  </head>
+  <body>
+  <table border=1><tr><td>
+	<form action="/modificar" method="post">
+	  <table border=0>
+		<tr><td colspan=2><label><strong>Detalles de la publicaci&oacute;n:</strong></label></td></tr>
+		<tr><td>T&iacute;tulo:</td><td><input type="text" name="titulo" value="{{ pub.titulo }}"></td></tr>
+		<tr><td>A&ntilde;o:</td><td><input type="numeric" name="year" value="{{ pub.year }}"></td></tr>
+		<tr><td>Precio: $</td><td><input type="numeric" name="precio" value="{{ pub.precio }}"></td></tr>
+		<tr><td>Editorial:</td><td><input type="text" name="editorial" value="{{ pub.editorial }}"></td></tr>
+		<tr><td>Datos del autor:</td><td></td></tr>
+		<tr><td>Nombre:</td><td><input type="text" name="nombre" value="{{ aut.nombre }}"></td></tr>
+		<tr><td>Apellido:</td><td><input type="text" name="apellido" value="{{ aut.apellido }}"></td></tr>
+		<tr><td>Ciudad:</td><td><input type="text" name="ciudad" value="{{ aut.ciudad }}"></td></tr>
+		<tr><td>C.P.:</td><td><input type="numeric" name="cp" value="{{ aut.cp }}"></td></tr>
+		<tr><td>E-mail:</td><td><input type="text" name="email" value="{{ aut.email }}"></td></tr>
+		<tr><td><input type="submit" value="Actualizar"></td></tr>
+	  </table>
+	  <input type="hidden" name="id" value="{{ pubid }}">
+	</form>
+	<a href="/">Volver</a>
+  </td></tr></table>
+
+  </body>
+</html>
