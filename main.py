@@ -1,14 +1,25 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-import controller
+from controller import PubController
+from controller import ABMController
+
+class Index(webapp.RequestHandler):
+	def get(self):
+		html = open("index.htm").read()
+		self.response.out.write(html)
 
 application = webapp.WSGIApplication([
-								("/", controller.Principal),
-								("/cargar",controller.Carga),
-								("/delete", controller.Baja),
-								("/info", controller.Detalle),
-								("/modificar", controller.Modificacion)
+								("/", Index),
+								("/p1", PubController.ListadoPrecios),
+								("/p2", PubController.Precio),
+								("/p3", PubController.Modificacion),
+								("/abm", ABMController.Principal),
+								("/cargar",ABMController.Carga),
+								("/delete", ABMController.Baja),
+								("/info", ABMController.Detalle),
+								#("/db", importdb.importdb),
+								("/modificar", ABMController.Modificacion)
 								], debug=True)
 
 def main():

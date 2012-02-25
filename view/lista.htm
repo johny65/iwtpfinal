@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<title>Modificar precio</title>
+	</head>
+	<body>
+		<form name="formprecio" method="post" action="/p2">
+			<table border=1><tr><td>
+			<table border=0>
+				<tr><td bgcolor=#D4FFAD colspan=2><h2>Modificar precio de una publicaci&oacute;n:</h2></td></tr>
+				<tr><td>Seleccionar una publicaci&oacute;n:</td>
+				<td>
+					<select name="pubkey">
+						{% for p in publicaciones %}
+							<option value="{{ p.pub_key }}">{{ p.titulo }}</option>
+						{% endfor %}
+					</select>
+				</td></tr>
+				<tr><td><input type="submit" value="Modificar"></td><td></td></tr>
+			</table>
+			</td></tr></table>
+		</form>
+		<table><tr><td><img src="/img/volver.png"></td><td><a href="/">Volver</a></td></tr></table>
+	</body>
+</html>

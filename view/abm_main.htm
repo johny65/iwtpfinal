@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>Publicaciones</title>
+  </head>
+  <body>
+	  <table border=0><tr><td colspan=3><h1>Listado de Publicaciones:</h1></td></tr>
+	    {% if not publicaciones %}
+	      <tr><td>No hay ninguna publicaci&oacute;n cargada.</td></tr>
+	    {% else %}
+          {% for pub in publicaciones %}
+            <tr bgcolor=#D4FFAD>
+              <td><strong>{{ pub.titulo }} ({{ pub.year }})</strong>
+              <br>{{ pub.autor.apellido }}, {{ pub.autor.nombre }}
+              <br>Precio: ${{ pub.precio }}
+              </td>
+              <td align="center"><a href="info?key={{ pub.pub_key }}">
+				  <img src="img/ver.jpg">Detalles</a></td>
+              <td align="center"><a href="delete?key={{ pub.pub_key }}">
+				  <img src="img/del.png">Eliminar</a></td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </table>
+
+      <br><br>
+
+	  <table border=1><tr><td>
+        <form action="/cargar" method="post">
+          <table border=0>
+            <tr><td colspan=2><label><strong>Cargar nueva publicaci&oacute;n:</strong></label></td></tr>
+            <tr><td>ID:</td><td><input type="text" name="id"></td></tr>
+            <tr><td>T&iacute;tulo:</td><td><input type="text" name="titulo"></td></tr>
+            <tr><td>A&ntilde;o:</td><td><input type="numeric" name="year"></td></tr>
+            <tr><td>Precio: $</td><td><input type="numeric" name="precio"></td></tr>
+            <tr><td>Editorial:</td><td><input type="text" name="editorial"></td></tr>
+            <tr><td>Autor:</td><td></td></tr>
+            <tr>
+				<td>Nombre del autor:</td>
+				<td>
+					<select name="autor">
+						{% for a in autores %}
+							<option value="{{ a.au_key }}">{{ a.apellido }}, {{ a.nombre }}</option>
+						{%endfor %}
+					</select>
+				</td>
+			</tr>
+            <tr><td><input type="submit" value="Guardar"></td></tr>
+          </table>
+        </form>
+      </td></tr></table>
+      <table><tr><td><img src="/img/volver.png"></td><td><a href="/">Volver</a></td></tr></table>
+  </body>
+</html>

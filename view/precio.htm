@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title>Modificar precio</title>
+	</head>
+	<body>
+		<form name="formprecio2" method="post" action="/p3">
+			<input type="hidden" name="pubkey" value="{{ pub.pub_key }}">
+			<table border=1><tr><td>
+			<table border=0>
+				<tr><td bgcolor=#D4FFAD colspan=2><h2>Modificar precio de una publicaci&oacute;n:</h2></td></tr>
+				<tr><td bgcolor=#E7FFCD>Publicaci&oacute;n a modificar:</td><td>({{ pub.pub_id }}) <strong>{{ pub.titulo }}</strong></td></tr>
+				<tr><td bgcolor=#E7FFCD>Precio actual:</td><td>$ <input type="text" name="precio" value="{{ pub.precio }}"></td></tr>
+				<tr><td><input type="submit" value="Modificar"></td><td></td></tr>
+			</table>
+			</td></tr></table>
+		</form>
+		<table><tr><td><img src="/img/volver.png"></td><td><a href="/p1">Volver</a></td></tr></table>
+	</body>
+</html>
