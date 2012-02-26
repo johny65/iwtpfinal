@@ -43,7 +43,8 @@ class Baja(webapp.RequestHandler):
 class Detalle(webapp.RequestHandler):
 	def get(self):
 		pubkey = self.request.get("key")
-		autor, pub = PubModel.detalles_publicacion(pubkey)
+		pub = PubModel.get_publicacion(pubkey)
+		autor = pub.autor
 		template_values = {"aut": autor, "pub": pub}
 		self.response.out.write(template.render("view/abm_detalles.htm", template_values))
 

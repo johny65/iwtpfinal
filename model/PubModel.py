@@ -50,14 +50,9 @@ def eliminar_publicacion(pubkey):
 	p = Publicacion.get(db.Key(pubkey))
 	p.delete()
 
-def detalles_publicacion(pubkey):
-	p = Publicacion.get(db.Key(pubkey))
-	p.pub_key = pubkey
-	a = p.autor
-	return (a, p)
-
 def modificar_publicacion(pubkey, d):
-	a, p = detalles_publicacion(pubkey)
+	p = get_publicacion(pubkey)
+	a = p.autor
 	a.nombre = d["nombre"]
 	a.apellido = d["apellido"]
 	a.ciudad = d["ciudad"]
