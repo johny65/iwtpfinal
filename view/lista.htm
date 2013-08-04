@@ -9,9 +9,9 @@
 				<tr><td bgcolor=#D4FFAD colspan=2><h2>Modificar precio de una publicaci&oacute;n:</h2></td></tr>
 				<tr><td>Seleccionar una publicaci&oacute;n:</td>
 				<td>
-					<select name="pubkey">
+					<select name="pub_id_seleccionada">
 						{% for p in publicaciones %}
-							<option value="{{ p.pub_key }}">{{ p.titulo }}</option>
+							<option value="{{ p.pub_id }}">{{ p.titulo }}</option>
 						{% endfor %}
 					</select>
 				</td></tr>

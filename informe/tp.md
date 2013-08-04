@@ -217,7 +217,7 @@ Para verlo en un ejemplo, podemos crear un modelo para la entidad `Autor`. Un au
 
 El código para definir la entidad es entonces el siguiente:
 
-    #!python
+    :::python
     from google.appengine.ext import db
 
     class Autor(db.Model):
@@ -246,7 +246,7 @@ Algunos detalles:
 
 Si queremos crear y persistir un nuevo autor, simplemente hacemos:
 
-    #!python
+    :::python
     nuevo_autor = Autor(au_id = "AU112233")
     nuevo_autor.nombre = "Nombre"
     nuevo_autor.apellido = "Apellido"
@@ -255,13 +255,13 @@ Si queremos crear y persistir un nuevo autor, simplemente hacemos:
 
 El método `put()` es el encargado de persistir el objeto en el almacén de datos. También se usa `put()` cuando queremos guardar las modificaciones hechas en un objeto ya existente:
 
-    #!python
+    :::python
     nuevo_autor.nombre = "Nombre Modificado"
     nuevo_autor.put()
 
 Para eliminar un objeto del almacén de datos, usamos el método `delete()`:
 
-    #!python
+    :::python
     nuevo_autor.delete()
 
 Información más detallada sobre la clase `Model`, así como los distintos tipos de propiedades disponibles, puede consultarse en la siguiente página: <https://developers.google.com/appengine/docs/python/datastore/datamodeling?hl=es-AR>.
@@ -273,7 +273,7 @@ Para realizar consultas al almacén de datos y obtener entidades guardadas, tene
 
 Siguiendo con nuestra entidad `Autor`, un ejemplo de consulta usando la interfaz `Query` es el siguiente:
 
-    #!python
+    :::python
     # el método all() devuelve un objeto Query para trabajar con todas las entidades de un tipo, en este caso de Autor
     autores = Autor.all()
     # otra forma equivalente de obtener el objeto Query:
@@ -285,7 +285,7 @@ Siguiendo con nuestra entidad `Autor`, un ejemplo de consulta usando la interfaz
 
 La misma consulta pero usando la interfaz `GqlQuery`:
 
-    #!python
+    :::python
     autores = db.GqlQuery("SELECT * FROM Autor " +
                         "WHERE cp = :1 " +
                         "ORDER BY apellido", 3000)
@@ -294,7 +294,7 @@ La misma consulta pero usando la interfaz `GqlQuery`:
 
 Hay que tener en cuenta que la consulta no es ejecutada hasta que no accedamos a los resultados. Las dos interfaces anteriores nos permiten hacer lo siguiente:
 
-    #!python
+    :::python
     # sólo obtenemos los primeros 5 autores:
     resultados = autores.fetch(5)
     for a in resultados:
@@ -307,13 +307,13 @@ Hay que tener en cuenta que la consulta no es ejecutada hasta que no accedamos a
 
 Al persistir toda instancia de una entidad en el almacén de datos, el sistema genera y le introduce automáticamente un ID único como clave del objeto, o **`Key`**. Podemos obtener esta clave a través del método `key()`:
 
-    #!python
+    :::python
     for a in autores:
         print("Key: " + a.key())
 
 Teniendo esta clave, podemos obtener un objeto directamente a través de ella:
 
-    #!python
+    :::python
     # creamos un nuevo autor, au_id es un atributo de la entidad Autor, no tiene nada que ver con el id o clave del almacén de datos
     autor = Autor(au_id = "112233")
     autor.put()
@@ -377,7 +377,7 @@ Como se ve el nombre de la aplicación por ahora va a ser "**iw-tpfinal**". Este
 
 Después creo el archivo `main.py`, por ahora con el siguiente contenido:
 
-    #!python
+    :::python
     from google.appengine.ext import webapp
     application = webapp.WSGIApplication([("/", None)], debug=True)
 
@@ -440,50 +440,43 @@ Teniendo nuestra entidad `Publicacion`, le agregamos al modelo los métodos nece
 
 El código de los métodos nombrados es el siguiente:
 
-    #!python
+    :::python
     def listado_publicaciones():
         """Devuelve una lista con las publicaciones guardadas."""
         q = Publicacion.all()
         q.order("titulo")
-        l = []
+        resultados = []
         for p in q:
-            #a cada publicación le agrego una propiedad pub_key que posee su key de la db para identificarla posteriormente
-            p.pub_key = str(p.key())
-            l.append(p)
-        return l
-    
-    def get_publicacion(pubkey):
-        """Devuelve una publicación en particular según su key en la base de datos."""
-        p = Publicacion.get(db.Key(pubkey)) #pubkey es una cadena, necesito convertirla a un Key
-        p.pub_key = pubkey 
-        return p
-    
-    def modificar_precio(pubkey, nuevo_precio):
+            resultados.append(p)
+        return resultados
+<br>
+
+    :::python
+    def get_publicacion(pub_id):
+        """Devuelve una publicación en particular según su ID de publicación."""
+        q = Publicacion.gql("WHERE pub_id = :1", pub_id)
+        return q.get() #get() devuelve un único objeto
+<br>
+
+    :::python
+    def modificar_precio(pub_id, nuevo_precio):
         """Asigna el nuevo precio a una publicación en particular."""
-        p = Publicacion.get(db.Key(pubkey))
+        p = get_publicacion(pub_id)
         p.precio = nuevo_precio
         p.put() #persiste los cambios
-        p.pub_key = pubkey
         return p
-    
-    
+<br>
+
+Todo el código anterior lo guardamos en un archivo llamado `PubModel.py`.
 
 
-
-
-
-
-
-A él le vamos a pedir la lista de publicaciones guardadas, 
-
-
-
-
-
+## 4.4 El controlador:
 
 
 
 Esto es lo que explicaba anteriormente donde decía que un único módulo será el encargado de redirigir las peticiones al módulo correspondiente (en este caso la clase manejadora se encuentra en el mismo archivo pero podemos ponerla en otro distinto).
+
+
 
 
 

@@ -21,30 +21,36 @@ def listado_publicaciones():
     q = Publicacion.all()
     q.order("titulo")
     #q = Publicacion.gql("ORDER BY titulo") #otra forma de obtener el listado
-    l = []
+    resultados = []
     for p in q:
-        p.pub_key = str(p.key()) #le meto su key de la bd para identificarla posteriormente
-        l.append(p)
-    return l
+        p.pub_key = str(p.key()) #le meto su key de la bd para el ABM, ahí las identifico por su key y no por su pub_id (más eficiente)
+        resultados.append(p)
+    return resultados
 
-def get_publicacion(pubkey):
-    """Devuelve una publicación en particular según su key en la base de datos."""
-    p = Publicacion.get(db.Key(pubkey))
-    p.pub_key = pubkey
-    return p
+def get_publicacion(pub_id):
+    """Devuelve una publicación en particular según su ID de publicación."""
+    q = Publicacion.gql("WHERE pub_id = :1", pub_id)
+    return q.get()
 
-def modificar_precio(pubkey, nuevo_precio):
+def modificar_precio(pub_id, nuevo_precio):
     """Asigna el nuevo precio a una publicación en particular."""
-    p = Publicacion.get(db.Key(pubkey))
+    p = get_publicacion(pub_id)
     p.precio = nuevo_precio
     p.put() #persiste los cambios
-    p.pub_key = pubkey
     return p
 
 
 
 #-----------------------------------------------------------------------------
 #Métodos para el ABM:
+
+def get_publicacion_por_key(pubkey):
+    """Recupera y devuelve una publicación según su key en la base de datos.
+    Se usa en el ABM, donde identifico a las publicaciones según esta key ya
+    que es más eficiente la búsqueda."""
+    p = Publicacion.get(db.Key(pubkey))
+    p.pub_key = pubkey
+    return p
 
 def nueva_publicacion(d):
     """Guarda una nueva publicación en la base de datos."""
@@ -56,12 +62,12 @@ def nueva_publicacion(d):
 
 def eliminar_publicacion(pubkey):
     """Elimina una publicación de la base de datos."""
-    p = Publicacion.get(db.Key(pubkey))
+    p = get_publicacion_por_key(pubkey)
     p.delete()
 
 def modificar_publicacion(pubkey, d):
     """Modifica los datos guardados de una publicación."""
-    p = get_publicacion(pubkey)
+    p = get_publicacion_por_key(pubkey)
     a = p.autor
     a.nombre = d["nombre"]
     a.apellido = d["apellido"]

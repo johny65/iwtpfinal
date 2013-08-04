@@ -54,7 +54,7 @@ class Detalle(webapp.RequestHandler):
     """Muestra los detalles de una publicación."""
     def get(self):
         pubkey = self.request.get("key")
-        pub = PubModel.get_publicacion(pubkey)
+        pub = PubModel.get_publicacion_por_key(pubkey)
         autor = pub.autor
         template_values = {"aut": autor, "pub": pub}
         self.response.out.write(template.render("view/abm_detalles.htm", template_values))
@@ -69,7 +69,8 @@ class Modificacion(webapp.RequestHandler):
             pub = datos["titulo"]
             template_values = {"titulo": pub}
             self.response.out.write(template.render("view/abm_ok.htm", template_values))
-        except Exception:
+        except Exception, e:
+            print(e)
             self.response.out.write("Datos inv&aacute;lidos.")
 
 def armar_datos(request):

@@ -20,8 +20,8 @@ class ListadoPrecios(webapp.RequestHandler):
 class Precio(webapp.RequestHandler):
     """Muestra la página donde se permite ingresar el nuevo precio."""
     def post(self):
-        key = self.request.get("pubkey")
-        p = PubModel.get_publicacion(key)
+        pid = self.request.get("pub_id_seleccionada")
+        p = PubModel.get_publicacion(pid)
         template_values = {"pub": p}
         self.response.out.write(template.render("view/precio.htm", template_values))
 
@@ -29,9 +29,9 @@ class Modificacion(webapp.RequestHandler):
     """Modifica el precio de una publicación."""
     def post(self):
         try:
-            key = self.request.get("pubkey")
+            pid = self.request.get("pub_id_actual")
             precio = float(self.request.get("precio"))
-            p = PubModel.modificar_precio(key, precio)
+            p = PubModel.modificar_precio(pid, precio)
             template_values = {"pub": p}
             self.response.out.write(template.render("view/preciook.htm", template_values))
         except Exception:
