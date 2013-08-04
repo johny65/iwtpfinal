@@ -11,7 +11,7 @@ from model import PubModel
 
 class ListadoPrecios(webapp.RequestHandler):
     """Muestra la página principal para la modificación de precios (contiene el
-    listado de publicaciones disponibles."""
+    listado de publicaciones disponibles)."""
     def get(self):
         p = PubModel.listado_publicaciones()
         template_values = {"publicaciones": p}

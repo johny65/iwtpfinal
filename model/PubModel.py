@@ -10,9 +10,9 @@ from AutorModel import Autor
 class Publicacion(db.Model):
     """Modelo de la entidad Publicación."""
     pub_id = db.StringProperty(required=True)
-    titulo = db.StringProperty()
+    titulo = db.StringProperty(required=True)
     year = db.IntegerProperty()
-    precio = db.FloatProperty()
+    precio = db.FloatProperty(required=True)
     editorial = db.StringProperty()
     autor = db.ReferenceProperty(Autor)
 
@@ -23,7 +23,7 @@ def listado_publicaciones():
     #q = Publicacion.gql("ORDER BY titulo") #otra forma de obtener el listado
     l = []
     for p in q:
-        p.pub_key = str(p.key()) #le meto su key de la bd
+        p.pub_key = str(p.key()) #le meto su key de la bd para identificarla posteriormente
         l.append(p)
     return l
 

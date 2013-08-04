@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
+
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
 
 from controller import PubController
 from controller import ABMController
@@ -11,20 +12,21 @@ class Index(webapp.RequestHandler):
         self.response.out.write(html)
 
 application = webapp.WSGIApplication([
+                                #página principal:
                                 ("/", Index),
-                                ("/p1", PubController.ListadoPrecios),
-                                ("/p2", PubController.Precio),
-                                ("/p3", PubController.Modificacion),
+
+                                #caso de estudio:
+                                ("/s1", PubController.ListadoPrecios),
+                                ("/s2", PubController.Precio),
+                                ("/s3", PubController.Modificacion),
+
+                                #abm completo:
                                 ("/abm", ABMController.Principal),
                                 ("/cargar",ABMController.Carga),
                                 ("/delete", ABMController.Baja),
                                 ("/info", ABMController.Detalle),
-                                ("/db", importdb.importdb),
-                                ("/modificar", ABMController.Modificacion)
+                                ("/modificar", ABMController.Modificacion),
+
+                                #carga inicial de la base de datos:
+                                ("/db", importdb.importdb)
                                 ], debug=True)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
