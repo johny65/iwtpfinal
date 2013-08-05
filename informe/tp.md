@@ -1,11 +1,32 @@
+<style>
+.break { page-break-before: always; }
+</style>
+
+<br>
+<br>
+<br>
+<br>
+<h1 class="titulo">
 Caso de Estudio usando el patrón MVC con Google App Engine y Python
-===================================================================
+</h1>
+<br>
+<br>
+<br>
+<br>
+<br>
+<p class="tp">Trabajo final Ingeniería Web</p>
+<p class="tp">2013</p>
+<p class="tp">Juan Bertinetti</p>
+
+<div class="break"></div>
+
+# Contenido
 
 [TOC]
 
-# 1. Introducción:
+<div class="break"></div>
 
-{: style="page-break-before: always" }
+# 1. Introducción:
 
 Al decidir un tema para este trabajo mi intención era mostrar alguna otra tecnología para hacer aplicaciones web que las enseñadas en clases (*Servlets Java*, *JSP*, *JavaBeans*, *JavaServer Faces*, etc.). Me llamó la atención ***Google App Engine***, un servicio de alojamiento para aplicaciones web que nos ofrece Google de forma gratuita, ya que nos permite desarrollar nuestras aplicaciones en **Python** y dejarlas disponibles en la Web con muchísima facilidad y usando toda la infraestructura de Google, por lo que decidí introducirme en el tema y tratar de llevar lo aprendido en clases a esta plataforma.
 
@@ -15,6 +36,7 @@ Por lo tanto este trabajo tiene como objetivo presentar Google App Engine y la m
 
 Cuando sea posible voy a mostrar las equivalencias con la API de Servlets Java aprendida en clases.
 
+<div class="break"></div>
 
 # 2. Instalación del entorno:
 
@@ -36,10 +58,11 @@ En este trabajo haremos uso de la primera opción (SDK para Python), por lo tant
 
 También necesitamos el intérprete de Python. Se puede conseguir en su sitio oficial ([www.python.org](http://www.python.org)) o desde los repositorios de la distribución de Linux que usemos. Necesitamos la versión 2 y no la 3, ya que App Engine está diseñado para trabajar con la versión 2 de Python (recomiendan la 2.7).
 
-Para escribir nuestras aplicaciones podemos hacer uso de cualquier editor de programación de nuestra preferencia, no hace falta disponer de ningún IDE especial. Sin embargo, se encuentra disponible un [plugin] que integra el SDK (para Java) con Eclipse.
+Para escribir nuestras aplicaciones podemos hacer uso de cualquier editor de programación de nuestra preferencia, no hace falta disponer de ningún IDE especial. Sin embargo, se encuentra disponible un plugin[^plugin] que integra el SDK (para Java) con Eclipse.
 
-[plugin]: https://developers.google.com/eclipse/?hl=es-AR
-[Eclipse]: http://www.eclipse.org/
+[^plugin]: <https://developers.google.com/eclipse/?hl=es-AR>
+
+<div class="break"></div>
 
 ## 2.2 Instalación:
 
@@ -59,17 +82,22 @@ En Linux, solamente descomprimimos el archivo ZIP a alguna carpeta y ya estamos 
 
 En Windows, el archivo de instalación nos instala todo automáticamente. La versión para Windows incluye además un lanzador gráfico, que tenemos que configurar para poder trabajar:
 
+![lanzador](launcher.png)
+
 Vamos a Edit/Preferences y configuramos los distintos elementos:
 
-En "Python Path" buscamos la ruta del ejecutable "pythonw.exe" en donde instalamos Python.
-En "App Engine SDK" ponemos la ruta de la carpeta donde instalamos el SDK de App Engine.
-En "Editor" ponemos algún editor de texto de nuestra preferencia.
-Dejamos en blanco "Deployment Server".
+![preferencias](preferences.png)
+
+- En "Python Path" buscamos la ruta del ejecutable "pythonw.exe" en donde instalamos Python.
+- En "App Engine SDK" ponemos la ruta de la carpeta donde instalamos el SDK de App Engine.
+- En "Editor" ponemos algún editor de texto de nuestra preferencia.
+- Dejamos en blanco "Deployment Server".
 
 ### 2.2.3 El servidor de pruebas:
 
 El SDK trae un servidor de pruebas que emula todos los servicios de App Engine con el que podemos probar nuestras aplicaciones localmente y que no requiere ninguna configuración adicional para trabajar con él. Más adelante voy a mostrar cómo usarlo.
 
+<div class="break"></div>
 
 # 3. Pequeña guía sobre Google App Engine:
 
@@ -105,13 +133,16 @@ Este servicio permite a nuestra aplicación manipular imágenes, como recortar, 
 
 Podemos configurar la programación de tareas para que nuestra aplicación ejecute, así como también ella misma puede añadir tareas a una cola.
 
-Además de estos servicios, tenemos a disposición muchas herramientas y recursos útiles para trabajar en App Engine, que podemos consultar en la siguiente página: <https://developers.google.com/appengine/tools_tips?hl=es-AR>.
+Además de estos servicios, tenemos a disposición muchas herramientas y recursos útiles para trabajar en App Engine, que podemos consultar en su página[^tools].
 
-Información más detallada sobre App Engine se puede ver en este enlace: <http://code.google.com/intl/es-AR/appengine/docs/whatisgoogleappengine.html>. La página web de la plataforma es muy rica en documentación e información relacionada, incluyendo ejemplos, tutoriales, preguntas frecuentes, etc. Es recomendable darle un vistazo.
+Información más detallada sobre App Engine se puede ver en este enlace[^mas]. La página web de la plataforma es muy rica en documentación e información relacionada, incluyendo ejemplos, tutoriales, preguntas frecuentes, etc. Es recomendable darle un vistazo.
+
+[^tools]: <https://developers.google.com/appengine/tools_tips?hl=es-AR>
+[^mas]: <http://code.google.com/intl/es-AR/appengine/docs/whatisgoogleappengine.html>
 
 ## 3.2 Estructura de una aplicación web:
 
-Una aplicación web creada para App Engine en Python consiste básicamente en uno o varios archivos *.py* (código fuente) ordenados a gusto en subdirectorios o no, y un archivo de configuración llamado **app.yaml** ubicado en la raíz y que es obligatorio. Sería el equivalente al archivo **web.xml** ubicado en el directorio **WEB-INF** que usamos en nuestras aplicaciones con servlets Java en el sentido de que es quien describe a nuestra aplicación y donde se configuran sus opciones de despliegue.
+Una aplicación web creada para App Engine en Python consiste básicamente en uno o varios archivos *.py* (código fuente) ordenados a gusto en subdirectorios o no, y un archivo de configuración llamado `app.yaml` ubicado en la raíz y que es obligatorio. Sería el equivalente al archivo `web.xml` ubicado en el directorio **WEB-INF** que usamos en nuestras aplicaciones con servlets Java en el sentido de que es quien describe a nuestra aplicación y donde se configuran sus opciones de despliegue.
 La sintaxis de este archivo es YAML[^yaml], y una configuración básica sería la siguiente:
 
     :::yaml
@@ -143,7 +174,8 @@ Si tenemos un directorio con archivos estáticos (es decir que puedan ser accedi
 
 De esta forma en el ejemplo podemos acceder a cualquier archivo ubicado en la carpeta **img** a través de la URL **/img/nombre_del_archivo**.
 
-**Nota:** las últimas versiones del SDK de App Engine incluyen un directorio llamado **new_project_template** que contiene un esqueleto como el explicado anteriormente para empezar a desarrollar una nueva aplicación.
+>**Nota:**</br>
+> Las últimas versiones del SDK de App Engine incluyen un directorio llamado **new_project_template** que contiene un esqueleto como el explicado anteriormente para empezar a desarrollar una nueva aplicación.
 
 
 ## 3.3 Uso de `webapp`:
@@ -155,7 +187,7 @@ Sin embargo, App Engine ya incluye un framework sencillo que viene con el kit de
 Un ejemplo de aplicación web usando este framework es el siguiente (éste sería el archivo `modulo.py` que comentaba anteriormente cuando hablaba del archivo `app.yaml`):
 
 
-    #!python
+    :::python
     from google.appengine.ext import webapp
     
     class MainPage(webapp.RequestHandler):
@@ -250,7 +282,8 @@ Si queremos crear y persistir un nuevo autor, simplemente hacemos:
     nuevo_autor = Autor(au_id = "AU112233")
     nuevo_autor.nombre = "Nombre"
     nuevo_autor.apellido = "Apellido"
-    #...definimos otras propiedades si queremos, o las pasamos en el constructor directamente
+    # ...definimos otras propiedades si queremos, o
+    # las pasamos en el constructor directamente
     nuevo_autor.put()
 
 El método `put()` es el encargado de persistir el objeto en el almacén de datos. También se usa `put()` cuando queremos guardar las modificaciones hechas en un objeto ya existente:
@@ -264,8 +297,9 @@ Para eliminar un objeto del almacén de datos, usamos el método `delete()`:
     :::python
     nuevo_autor.delete()
 
-Información más detallada sobre la clase `Model`, así como los distintos tipos de propiedades disponibles, puede consultarse en la siguiente página: <https://developers.google.com/appengine/docs/python/datastore/datamodeling?hl=es-AR>.
+Información más detallada sobre la clase `Model`, así como los distintos tipos de propiedades disponibles, puede consultarse en la página de App Engine[^model].
 
+[^model]: <https://developers.google.com/appengine/docs/python/datastore/datamodeling?hl=es-AR>
 
 #### 3.4.2.1 Consultas:
 
@@ -274,7 +308,8 @@ Para realizar consultas al almacén de datos y obtener entidades guardadas, tene
 Siguiendo con nuestra entidad `Autor`, un ejemplo de consulta usando la interfaz `Query` es el siguiente:
 
     :::python
-    # el método all() devuelve un objeto Query para trabajar con todas las entidades de un tipo, en este caso de Autor
+    # el método all() devuelve un objeto Query para trabajar
+    # con todas las entidades de un tipo, en este caso de Autor
     autores = Autor.all()
     # otra forma equivalente de obtener el objeto Query:
     autores = db.Query(Autor)
@@ -314,17 +349,22 @@ Al persistir toda instancia de una entidad en el almacén de datos, el sistema g
 Teniendo esta clave, podemos obtener un objeto directamente a través de ella:
 
     :::python
-    # creamos un nuevo autor, au_id es un atributo de la entidad Autor, no tiene nada que ver con el id o clave del almacén de datos
+    # creamos un nuevo autor, au_id es un atributo de la entidad
+    # Autor, no tiene nada que ver con el id o clave del almacén de datos
     autor = Autor(au_id = "112233")
     autor.put()
     # en key guardamos la clave que le dio el almacén de datos
     key = autor.key()
-    # cuando lo necesitemos, podemos obtener al autor anterior con su key a través del método get()
+    # cuando lo necesitemos, podemos obtener al autor anterior con
+    # su key a través del método get()
     mismo_autor = Autor.get(key)
 
-Más información sobre las consultas se puede obtener en la siguiente página: <https://developers.google.com/appengine/docs/python/datastore/queries?hl=es-AR>.
+En la página de App Engine puede encontrarse más información sobre las consultas[^consultas] y una referencia sobre el lenguaje GQL[^gql].
 
-Una referencia sobre el lenguaje GQL se puede ver acá: <https://developers.google.com/appengine/docs/python/datastore/gqlreference>
+[^consultas]: <https://developers.google.com/appengine/docs/python/datastore/queries?hl=es-AR>
+[^gql]: <https://developers.google.com/appengine/docs/python/datastore/gqlreference>
+
+<div class="break"></div>
 
 # 4. Caso de estudio:
 
@@ -354,7 +394,7 @@ La vista (o las vistas) van a ser los archivos HTML en donde presentemos la info
 * El Controlador:
 Será la conexión entre el modelo y la vista. Recibe la entrada del usuario, invocando los métodos del modelo y transfiriendo los resultados a la vista.
 
-El controlador estará dividido en 3 "servicios": **s1**, **s2** y **s3**. Al invocar a **s1** vamos a obtener la primera pantalla donde podemos elegir una publicación a editar. Desde esta vista se invoca a **s2** con una publicación en particular, y vamos a obtener la pantalla en donde vemos el precio que tiene esa publicación y donde podemos modificarlo. Por último se invoca a **s3** quien será el encargado de guardar este valor y mostrarnos una pantalla de confirmación.
+El controlador estará dividido en 3 "servicios": **`s1`**, **`s2`** y **`s3`**. Al invocar a **`s1`** vamos a obtener la primera pantalla donde podemos elegir una publicación a editar. Desde esta vista se invoca a **`s2`** con una publicación en particular, y vamos a obtener la pantalla en donde vemos el precio que tiene esa publicación y donde podemos modificarlo. Por último se invoca a **`s3`** quien será el encargado de guardar este valor y mostrarnos una pantalla de confirmación.
 
 ## 4.2 Crear la nueva aplicación:
 
@@ -391,20 +431,15 @@ Con esto tenemos el servidor corriendo en `localhost` en el puerto 8080. Si prob
 
 ![Página en blanco](blanco.png)
 
------------
+En Windows empezar una aplicación nueva es más sencillo. Abrimos el lanzador (Google App Engine Launcher), y elegimos *File/Add New Application* (o el botón "+" en la parte inferior). En el cuadro configuramos el nombre, una ruta donde guardarla (automáticamente se crea una carpeta con el nombre de la aplicación en esta ruta) y un puerto para el servidor (dejamos 8080):
 
-En Windows empezar una aplicación nueva es más sencillo. Abrimos el lanzador (Google App Engine Launcher), y elegimos File/Add New Application (o el botón “+” en la parte inferior). En el cuadro configuramos el nombre, una ruta donde guardarla (automáticamente se crea una carpeta con el nombre de la aplicación en esta ruta) y un puerto para el servidor (dejamos 8080):
+![nueva](nueva.png)
 
+Al presionar *Create* obtenemos ya los archivos `app.yaml` y `main.py` genéricos (una aplicación que muestra "Hello world"). Si presionamos el botón *Run*, el servidor de pruebas se ejecuta. Para probar la aplicación, presionamos el botón *Browse*.
 
-Al presionar Create obtenemos ya los archivos app.yaml y main.py genéricos (una aplicación que muestra "Hello world"). Si presionamos el botón Run, el servidor se ejecuta y podemos probar la aplicación con el botón Browse:
+![run](run.png)
 
-
-
-En este caso modificamos los archivos app.yaml y main.py con los mostrados en este trabajo.
-
-
-----------
-
+En este caso modificamos los archivos `app.yaml` y `main.py` con los mostrados en este trabajo.
 
 
 **Algunos datos sobre el servidor de pruebas:**
@@ -419,7 +454,7 @@ Como ya dije anteriormente, el modelo será el encargado de todo lo relacionado 
 
 En primer lugar, creamos la entidad `Publicacion` que será con la que trabajaremos:
 
-    #!python
+    :::python
     class Publicacion(db.Model):
         """Modelo de la entidad Publicación."""
         pub_id = db.StringProperty(required=True)
@@ -467,23 +502,298 @@ El código de los métodos nombrados es el siguiente:
         return p
 <br>
 
-Todo el código anterior lo guardamos en un archivo llamado `PubModel.py`.
+Todo el código anterior lo guardamos en un archivo llamado **`PubModel.py`**.
+
+
+## 4.3 La vista:
+
+La vista está constituida por todos los archivos HTML que serán usados para presentarle la información al usuario y para obtener su entrada.
+
+Toda aplicación web devuelve código HTML generado de forma dinámica a partir del código de la aplicación a través de plantillas o algún otro mecanismo. En este trabajo, para la vista usaremos el sistema de plantillas de App Engine, que permite generar pantallas dinámicas según la información con la que se trabaja. Es muy similar a lo que es JSP (JavaServer Pages).
+
+Una plantilla es en sí código HTML que se guarda en un archivo independiente con una sintaxis especial para indicar dónde aparecen los datos de la aplicación. Existen varios sistemas de plantillas para Python que se pueden usar en App Engine (EZT, Cheetah, ClearSilver, Quixote, Django, entre muchos otros), pero `webapp` ya contiene el motor de plantillas Django de manera automática, por lo que trabajaremos con él.
+
+### 4.3.1 Uso de plantillas en App Engine:
+
+Para utilizar las plantillas, desde el código de la aplicación se llama al siguiente método, pasándole los valores a los que tendrá acceso la plantilla:
+
+    :::python
+    from google.appengine.ext.webapp import template
+    template.render("ruta/a/la/plantilla", template_values)
+
+donde `template_values` es un diccionario que asocia un parámetro de la plantilla con algún valor (o valores). Por ejemplo, el siguiente código HTML podría ser una plantilla simple:
+
+    <html>
+        <head>
+            <title>Listado de Publicaciones</title>
+        </head>
+        <body>
+            <h1>Publicaciones nuevas - {{ periodo }}</h1>
+            {% for p in publicaciones %}
+                <p>ID: {{ p.pub_id }} - Título: {{ p.titulo }}</p>
+            {% endfor %}
+        </body>
+    </html>
+
+
+Los parámetros de la plantilla que necesitamos reemplazar con información son `periodo` y `publicaciones`. Esto lo hacemos desde nuestra aplicación de la siguiente manera:
+
+    :::python
+    #"listado" contiene el listado de publicaciones
+    # nuevas cargadas en agosto de 2013
+    template_values = {
+        "publicaciones": listado,
+        "periodo": "Agosto 2013"
+    }
+    html = template.render(
+        "plantilla_simple_anterior.html",
+         template_values)
+
+
+Se puede observar en el ejemplo que desde la plantilla podemos acceder a propiedades de los objetos. Sabemos que `listado` es una lista de objetos de tipo `Publicacion`, que luego pasamos a la plantilla como el parámetro `publicaciones`. La plantilla luego a cada elemento le pide su ID y título (con `{{ p.pub_id }}` y `{{ p.titulo }}`).
+
+De esta forma, en la variable `html` obtenemos la salida que debemos mandarle al usuario, que podría verse como la siguiente:
+
+***
+
+> <h1>Publicaciones nuevas - Agosto 2013</h1>
+> ID: TC4203 - Título: Fifty Years in Buckingham Palace Kitchens
+>
+> ID: PS2091 - Título: Is Anger the Enemy?
+>
+> ID: JJ6565 - Título: La vida de Pi
+>
+> ID: PS2106 - Título: Life Without Fear
+>
+> ID: PC9999 - Título: Net Etiquette
+>
+> ID: TC3218 - Título: Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean
+>
+> ID: PS3333 - Título: Prolonged Data Deprivation: Four Case Studies
+>
+>ID: PC8888 - Título: Secrets of Silicon Valley
+
+***
+
+
+
+### 4.3.2 Las vistas para el caso de estudio:
+
+En nuestro caso de estudio, necesitamos 3 pantallas para interactuar con el usuario:
+
+1. Pantalla principal con el listado de publicaciones disponibles desde la cual podemos elegir con cuál trabajar.
+2. Pantalla donde se le permite al usuario introducir el nuevo valor para el precio de la publicación.
+3. Pantalla de confirmación donde se informa el resultado de la operación.
+
+El código para las 3 plantillas que serán usadas para construir las pantallas mencionadas anteriormente es el siguiente (versión simplificada para que se observe mejor el uso de las plantillas; las imágenes mostradas no corresponden al código exactamente como está presentado acá):
+
+1 . Listado de publicaciones:
+
+Esta pantalla consiste en un formulario el cual posee una lista desplegable (`<select>`) con las publicaciones disponibles. El valor que cada elemento contiene y que es enviado con el método POST es el ID (`pub_id`) de cada publicación. El valor seleccionado es enviado en el parámetro `pub_id_seleccionada`.
+
+    <!-- archivo: listado.htm -->
+    <html>
+        <body>
+            <form name="formprecio" method="post" action="/s2">
+                <h2>Modificar precio de una publicación:</h2>
+                <p>Seleccionar una publicación:</p>
+                <p><select name="pub_id_seleccionada">
+                    {% for p in publicaciones %}
+                        <option value="{{ p.pub_id }}">
+                            {{ p.titulo }}
+                        </option>
+                    {% endfor %}
+                </select></p>
+                <p><input type="submit" value="Modificar"></p>
+            </form>
+        </body>
+    </html>
+
+
+![listado de publicaciones](listado.png)
+
+
+2 . Formulario de modificación de precio:
+
+Este formulario contiene un campo de texto, llamado `precio`, que permite ingresar el valor del nuevo precio. Inicialmente está cargado con el precio anterior de la publicación. Para identificar con qué publicación se está trabajando, hay un campo escondido (`<input type="hidden">`) que contiene el ID de la publicación actual, y que es enviado en el parámetro `pub_id_actual`.
+
+    <!-- archivo: input_precio.htm -->
+    <html>
+        <body>
+            <form name="formprecio2" method="post" action="/s3">
+                <input type="hidden" name="pub_id_actual"
+                    value="{{ pub.pub_id }}">
+                <h2>Modificar precio de una publicación:</h2>
+                <p>Publicación a modificar: ({{ pub.pub_id }})
+                    <strong>{{ pub.titulo }}</strong></p>
+                <p>Precio actual: $ <input type="text" name="precio"
+                    value="{{ pub.precio }}"></p>
+                <p><input type="submit" value="Modificar"></p>
+            </form>
+            <p><a href="/s1">Volver</a></p>
+        </body>
+    </html>
+
+![modificación de precio](modificacion.png)
+
+
+3 . Confirmación del resultado:
+
+En esta pantalla simplemente se muestra un mensaje de información con algunos datos de la publicación modificada.
+
+    <!-- archivo: precio_ok.htm -->
+    <html>
+        <body>
+            <h2>Modificar precio de una publicación:</h2>
+            <p>El precio de la publicación <strong>({{ pub.pub_id }})
+                {{ pub.titulo }}</strong> fue modificado
+                correctamente.</p>
+            <p><a href="/s1">Volver</a></p>
+        </body>
+    </html>
+
+![confirmación](ok.png)
 
 
 ## 4.4 El controlador:
 
+Como mencioné anteriormente, el controlador estará dividido en 3 servicios que son los que acceden a los métodos del modelo y se encargan de actualizar y mostrar la vista correcta, cada uno con su funcionalidad específica. En la sección anterior donde mostraba el código de las vistas, se podía observar la llamada a estos servicios (por ejemplo en el `action` de los formularios).
+
+Al igual que como hacíamos en clase al implementar el patrón MVC con servlets Java, cada servicio es una clase que se instancia cuando es necesario, sólo que acá no lo hacemos manualmente. Además, en equivalencia con lo visto con Java, no son clases que implementan una interfaz particular, sino que serían servlets distintas (ya que deben heredar de `webapp.RequestHandler`). Podríamos decir que cada uno es un controlador, pero prefiero llamar `controlador` a todo el conjunto de estas clases, y a cada una `servicio`.
+
+### 4.4.1 Servicios:
+
+Los servicios creados son los siguientes. Todo el código de las clases correspondientes es guardado en el archivo **`PubController.py`**.
+
+1 . **Servicio 1 (`s1`):**
+
+Éste es el servicio de entrada por llamarlo de alguna manera. Es quien nos devuelve la pantalla principal con el listado de publicaciones. Como se ve en las vistas, los enlaces "Volver" apuntan a este servicio con el fin de reiniciar todo el proceso.
+
+Este servicio es invocado con el método GET de HTTP, por lo que implementamos la respuesta a este método:
+
+    :::python
+    class ListadoPrecios(webapp.RequestHandler):
+        """Muestra la página principal para la modificación de
+        precios (contiene el listado de publicaciones
+        disponibles) (Servicio 1)."""
+        def get(self):
+            p = PubModel.listado_publicaciones()
+            template_values = {"publicaciones": p}
+            self.response.out.write(template.render(
+                "view/listado.htm", template_values))
+
+Como se observa, simplemente pide al modelo el listado de publicaciones disponibles, y se las pasa a la plantilla correspondiente a través del parámetro indicado, devolviendo como respuesta el HTML generado.
+
+2 . **Servicio 2 (`s2`):**
+
+Este servicio recibe el ID de una publicación (la seleccionada en el listado) para mostrar el formulario que permite modificarle el precio, junto con cierta información sobre la publicación. Como se ve en `listado.htm`, es invocado a través del método POST y el ID de la publicación seleccionada es pasado en el parámetro `pub_id_seleccionada`.
+
+    :::python
+    class Precio(webapp.RequestHandler):
+        """Muestra la página donde se permite ingresar el
+        nuevo precio (Servicio 2)."""
+        def post(self):
+            pid = self.request.get("pub_id_seleccionada")
+            p = PubModel.get_publicacion(pid)
+            template_values = {"pub": p}
+            self.response.out.write(template.render(
+                "view/input_precio.htm", template_values))
+
+Acá estamos haciendo uso del objeto `self.request`, equivalente al `HttpServletRequest` de Java, al que podemos pedirle los parámetros de la consulta, en este caso el valor de `pub_id_seleccionada`.
+
+3 . **Servicio 3 (`s3`):**
+
+Por último, este servicio recibe el nuevo precio ingresado por el usuario (a través del parámetro `precio`), y es quien le dice al modelo que persista este nuevo valor. Para poder identificar a la publicación a la que debe modificarle el precio, también necesita recibir su ID. Es por eso que el formulario (`input_precio.htm`) guarda este valor en un campo oculto y lo envía en el parámetro `pub_id_actual`.
+
+    :::python
+    class Modificacion(webapp.RequestHandler):
+        """Modifica el precio de una publicación (Servicio 3)."""
+        def post(self):
+            try:
+                pid = self.request.get("pub_id_actual")
+                precio = float(self.request.get("precio"))
+                p = PubModel.modificar_precio(pid, precio)
+                template_values = {"pub": p}
+                self.response.out.write(template.render(
+                    "view/precio_ok.htm", template_values))
+            except Exception:
+                self.response.out.write("El precio ingresado es inválido.")
+
+En este caso agregamos una pequeña verificación en caso de que el valor del nuevo precio sea inválido. Si al querer convertir este valor en un flotante se lanza una excepción, entonces la capturamos y simplemente enviamos como respuesta un mensaje de error en texto plano. Sería recomendable agregar muchas más validaciones en todo el proceso (incluso agregar validaciones en el lado del cliente, en las vistas) y mostrar mensajes de error adecuados, pero no hace al objetivo de este trabajo.
+
+### 4.4.2 Uniendo todo:
+
+En este punto ya tenemos todo el código necesario para que el caso de estudio funcione, sólo falta "unir todo", esto es, configurar para que de alguna manera podamos invocar a los servicios anteriores a través de una URL ("`/s1`", "`/s2`" y "`/s3`").
+
+En la implementación vista en Java, esto lo hacíamos pasando en la *query string* el nombre totalmente cualificado de la clase y el nombre del archivo JSP de la vista. Luego instanciábamos esa clase manualmente mediante reflexión, y por último se redirigía a la vista indicada:
+
+Query string:
+
+*http://localhost:8080/MVC/MiServlet?prmServicio=pkgIngWeb.Servicio1&
+prmView=/JSPs/View1.jsp*
+
+Código:
+
+    :::java
+	public void doGet(HttpServletRequest request,
+	        HttpServletResponse response)
+			throws ServletException, IOException {
+
+		ServletContext sc = getServletContext();
+		String sServicio = request.getParameter("prmServicio");
+		try {
+			Class oClass = Class.forName(sServicio);
+			Servicio oServicio = (Servicio)oClass.newInstance();
+			oServicio.ejecutar(request, response, sc);
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error cargando la clase: " + e);
+		}		
+		String vista = request.getParameter("prmView");
+		RequestDispatcher oView = sc.getRequestDispatcher(vista);
+		oView.forward(request, response);
+	}
+
+Esto tiene ciertos inconvenientes. En primer lugar debería ser el controlador quien sepa a qué vista redirigir o qué vista usar, y no ser un parámetro que llega desde el cliente. El mismo podría pasar otro valor correspondiente a una vista que no debería ver, o que no tiene permiso para ver, o una vista inválida que terminaría en un mensaje de error. Además esta query string está contenida en una vista (como acción de un formulario o como un enlace) por lo que ante cualquier cambio de archivos hay que acomodar estas URL's.
+
+Lo mismo sucede para el servicio. No debería ser pasado como un parámetro ya que implica riesgos de seguridad. Al hacer uso de reflexión para instanciar el servicio, cualquier nombre totalmente cualificado válido pasado como parámetro resultaría en la instanciación de esa clase. Además se está exponiendo el nombre de la clase Java, de su paquete, y otra información que el usuario no debería ver.
+
+Por otro lado, esto puede resultar en errores ante cualquier nombre mal escrito, y cualquier tarea de refactorización será más laboriosa.
+
+Volviendo a este trabajo, usando `webapp` podemos "unir" nuestros servicios a través de un mapeo de una URL a una clase de servicio (clase manejadora, o controladora). Este mapeo se indica al definir nuestro objeto `application` de tipo `webapp.WSGIApplication`, de la forma en que está mostrado cuando expliqué el framework `webapp` (sección 3.3).
+
+Cuando empezamos el caso de estudio, habíamos quedado con un archivo `main.py` que por ahora mostraba una página en blanco, ya que no teníamos ninguna clase de controlador:
+
+    :::python
+    from google.appengine.ext import webapp
+    application = webapp.WSGIApplication([("/", None)], debug=True)
+
+Ahora que ya tenemos todos los servicios de nuestro controlador, nuestra `application` queda de la siguiente forma:
+
+    :::python
+    application = webapp.WSGIApplication([
+                                ("/s1", PubController.ListadoPrecios),
+                                ("/s2", PubController.Precio),
+                                ("/s3", PubController.Modificacion),
+                                ], debug=True)
+
+De esta forma ya tenemos una manera de invocar los servicios sin los inconvenientes mencionados anteriormente. Esto es lo que explicaba en un momento cuando decía que un único módulo será el encargado de redirigir las peticiones al módulo correspondiente.
+
+Si entramos a la URL `http://localhost:8080/s1` tendremos nuestra aplicación funcionando.
 
 
-Esto es lo que explicaba anteriormente donde decía que un único módulo será el encargado de redirigir las peticiones al módulo correspondiente (en este caso la clase manejadora se encuentra en el mismo archivo pero podemos ponerla en otro distinto).
+### 4.4.4 Información adicional:
 
+Una vez que tenemos una aplicación hecha para App Engine, podemos subirla y dejarla disponible para los usuarios en Internet.
 
+Para esto debemos registrarla en **appengine.google.com**, y luego estaremos habilitados para subirla. Más información de cómo hacerlo se puede ver la página de documentación[^doc].
 
+[^doc]: <https://developers.google.com/appengine/docs/python/tools/uploadinganapp?hl=es-AR>
 
+<div class="break"></div>
 
+# 5. Conclusión
 
-4.5 La vista:
+Como se mostró en este trabajo, desarrollar un caso de estudio para una aplicación web hecha usando las herramientas brindadas por el SDK de App Engine para Python, es una tarea bastante sencilla.
 
-
-
-4.3.2 El sistema de plantillas de App Engine:
+Crear una aplicación para esta plataforma de Google, aparte de ser simple, brinda varias ventajas y facilidades a los desarrolladores, que quieran tener su aplicación corriendo en Internet. Entre otras, el precio, la escabilidad, la disponibilidad y los servicios que nos brinda Google.
 

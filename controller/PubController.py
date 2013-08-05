@@ -11,28 +11,28 @@ from model import PubModel
 
 class ListadoPrecios(webapp.RequestHandler):
     """Muestra la página principal para la modificación de precios (contiene el
-    listado de publicaciones disponibles)."""
+    listado de publicaciones disponibles) (Servicio 1)."""
     def get(self):
         p = PubModel.listado_publicaciones()
         template_values = {"publicaciones": p}
-        self.response.out.write(template.render("view/lista.htm", template_values))
+        self.response.out.write(template.render("view/listado.htm", template_values))
 
 class Precio(webapp.RequestHandler):
-    """Muestra la página donde se permite ingresar el nuevo precio."""
+    """Muestra la página donde se permite ingresar el nuevo precio (Servicio 2)."""
     def post(self):
         pid = self.request.get("pub_id_seleccionada")
         p = PubModel.get_publicacion(pid)
         template_values = {"pub": p}
-        self.response.out.write(template.render("view/precio.htm", template_values))
+        self.response.out.write(template.render("view/input_precio.htm", template_values))
 
 class Modificacion(webapp.RequestHandler):
-    """Modifica el precio de una publicación."""
+    """Modifica el precio de una publicación (Servicio 3)."""
     def post(self):
         try:
             pid = self.request.get("pub_id_actual")
             precio = float(self.request.get("precio"))
             p = PubModel.modificar_precio(pid, precio)
             template_values = {"pub": p}
-            self.response.out.write(template.render("view/preciook.htm", template_values))
+            self.response.out.write(template.render("view/precio_ok.htm", template_values))
         except Exception:
             self.response.out.write("El precio ingresado es inv&aacute;lido.")
